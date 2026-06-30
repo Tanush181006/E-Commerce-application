@@ -15,7 +15,7 @@ const QuantitySelector = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 text-white">
+    <div className="flex flex-col items-center gap-6 text-blue-600">
       <h1 className="text-4xl font-bold">Product Quantity</h1>
 
       <div className="flex items-center gap-6">

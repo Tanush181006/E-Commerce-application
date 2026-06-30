@@ -6,6 +6,7 @@ import Register from "../pages/Register.jsx";
 import NotFound from "../pages/NotFound.jsx";
 import AdminLogin from "../admin/pages/AdminLogin.jsx";
 import Dashboard from "../admin/pages/Dashboard";
+import QuantitySelector from "../components/QuantitySelector";
 
 
 function AppRoutes() {
@@ -18,6 +19,7 @@ function AppRoutes() {
         <Route path="*" element={<NotFound />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/components/quantity-selector" element={<QuantitySelector />} />
       </Routes>
     </BrowserRouter>
   );
