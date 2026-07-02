@@ -5,6 +5,12 @@ import products from "../data/products";
 
 
   const Home = ({ cartCount, onAddToCart }) => {
+    const [search, setSearch] = useState("");
+    const filteredProducts = products.filter((product) =>
+  product.name
+    .toLowerCase()
+    .includes(search.trim().toLowerCase())
+);
   
 
   
@@ -43,8 +49,17 @@ import products from "../data/products";
   </h1>
 
   <div className="flex flex-wrap justify-center gap-6">
+    <div className="w-full flex justify-center mb-8">
+  <input
+    type="text"
+    placeholder="Search products"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="w-96 px-4 py-3 rounded-lg border border-gray-300 text-white focus:outline-none"
+  />
+</div>
 
-    {products.map((product) => (
+    {filteredProducts.map((product) => (
       <ProductCard
   key={product.id}
   product={product}

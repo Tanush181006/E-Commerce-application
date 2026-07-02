@@ -58,6 +58,9 @@ const decreaseQuantity = (productId) => {
 const removeFromCart = (productId) => { 
     setCart(cart.filter((item) => item.id !== productId));
   };  
+  const emptyCart = () => {
+  setCart([]);
+};
   return (
     <AppRoutes
       cart={cart}
@@ -66,6 +69,7 @@ const removeFromCart = (productId) => {
       onIncreaseQuantity={increaseQuantity}
       onDecreaseQuantity={decreaseQuantity}
       onRemoveFromCart={removeFromCart}
+      onEmptyCart={emptyCart}
 
     />
   );

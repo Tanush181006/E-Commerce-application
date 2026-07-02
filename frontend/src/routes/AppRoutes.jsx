@@ -9,8 +9,9 @@ import AdminLogin from "../admin/pages/AdminLogin.jsx";
 import Dashboard from "../admin/pages/Dashboard";
 import QuantitySelector from "../components/QuantitySelector";
 import Cart from "../pages/Cart.jsx";
+import ProductDetails from "../pages/ProductDetails.jsx";
 
-function AppRoutes({cart, cartCount, onAddToCart, onIncreaseQuantity, onDecreaseQuantity, onRemoveFromCart}) {
+function AppRoutes({cart, cartCount, onAddToCart, onIncreaseQuantity, onDecreaseQuantity, onRemoveFromCart, onEmptyCart}) {
   return (
     <BrowserRouter>
       <Routes>
@@ -19,6 +20,14 @@ function AppRoutes({cart, cartCount, onAddToCart, onIncreaseQuantity, onDecrease
   element={
     <Home
       cartCount={cartCount}
+      onAddToCart={onAddToCart}
+    />
+  }
+/>
+<Route
+  path="/product/:id"
+  element={
+    <ProductDetails
       onAddToCart={onAddToCart}
     />
   }
@@ -32,7 +41,8 @@ function AppRoutes({cart, cartCount, onAddToCart, onIncreaseQuantity, onDecrease
         <Route path="/cart" element={<Cart cart={cart}
          onIncreaseQuantity={onIncreaseQuantity} 
          onDecreaseQuantity={onDecreaseQuantity}
-          onRemoveFromCart={onRemoveFromCart} />} />
+          onRemoveFromCart={onRemoveFromCart} 
+          onEmptyCart={onEmptyCart}/>} />
       </Routes>
     </BrowserRouter>
   );
