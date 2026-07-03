@@ -4,6 +4,7 @@ import AppRoutes from "./routes/AppRoutes";
 function App() {
 
   const [cart, setCart] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleAddToCart = (product) => {
    
@@ -70,6 +71,8 @@ const removeFromCart = (productId) => {
       onDecreaseQuantity={decreaseQuantity}
       onRemoveFromCart={removeFromCart}
       onEmptyCart={emptyCart}
+      isLoggedIn={isLoggedIn}
+      setIsLoggedIn={setIsLoggedIn}
 
     />
   );

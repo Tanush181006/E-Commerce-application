@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -13,7 +14,10 @@ const Login = () => {
       setError("Email is required");
       return;
     }
-
+    if (!email.includes("@") || !email.includes(".com")) {
+  setError("Please enter a valid email address");
+  return;
+    }
     if (password == "") {
       setError("Password is required");
       return;
@@ -25,11 +29,13 @@ const Login = () => {
     }
 
     setError("");
+    setIsLoggedIn(true);
 
     navigate("/");
   };
 
   return (
+    <nav>
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
 
@@ -42,7 +48,7 @@ const Login = () => {
         <input
           type="email"
           placeholder="Enter Email"
-          className="w-full p-3 rounded mb-4"
+          className="w-full p-2 rounded mb-4"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -53,25 +59,25 @@ const Login = () => {
         <input
           type="password"
           placeholder="Enter Password"
-          className="w-full p-3 rounded mb-4"
+          className="w-full p-2 rounded mb-4"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         </div>
 
 
-        <div className="flex items-center gap-2 text-white mb-4">
-          <input
-            id="remember"
-            type="checkbox"
-            checked={rememberMe}
-            onChange={(e) => setRememberMe(e.target.checked)}
-          />
+        <p
+        
+         className="flex-center  text-center p-2 mt-6 text-white">
+          Don't have an account?{" "}
+          
+          <Link to="/register">
+          <span className="text-blue-400 font-semibold cursor-pointer">
+            Register
+          </span>
+          </Link>
+        </p>
 
-          <label htmlFor="remember"> 
-            Remember Me
-            </label>
-        </div>
 
         {error && (
           <p className="text-red-400 text-center mb-4">
@@ -81,7 +87,7 @@ const Login = () => {
 
         <button
           onClick={handleLogin}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded transition"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 mb-2 rounded transition"
         >
           Login
         </button>
@@ -90,6 +96,7 @@ const Login = () => {
 
       </div>
     </div>
+    </nav>
   );
 };
 
