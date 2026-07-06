@@ -1,13 +1,13 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import products from "../data/products";
+import allProducts from "../data/allProducts";
 import Navbar from "../components/Navbar";
 
 const ProductDetails = ({ onAddToCart, cartCount }) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const product = products.find(
+  const product = allProducts.find(
     (product) => product.id === Number(id)
   );
 
@@ -18,12 +18,7 @@ const ProductDetails = ({ onAddToCart, cartCount }) => {
 
       <div className="p-8">
 
-        <button
-          onClick={() => navigate("/")}
-          className="text-white text-3xl font-bold hover:text-blue-500 mb-8"
-        >
-          ←
-        </button>
+       
 
         <div className="flex flex-col items-center">
 

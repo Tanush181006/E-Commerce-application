@@ -62,6 +62,7 @@ const removeFromCart = (productId) => {
   const emptyCart = () => {
   setCart([]);
 };
+
   return (
     <AppRoutes
       cart={cart}

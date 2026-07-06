@@ -4,10 +4,9 @@ import { Link } from "react-router-dom";
 const Navbar = ({ cartCount, isLoggedIn, setIsLoggedIn }) => {
   return (
     <nav className="bg-gray-800 text-white px-8 py-4 flex justify-between items-center">
-      
-      <h1 className="text-2xl font-bold">
-        🛍️ E-Commerce
-      </h1>
+      <Link to="/" className="text-2xl font-bold">
+        🛍️ ZenMart
+      </Link>
 
       <div className="flex items-center gap-4">
 

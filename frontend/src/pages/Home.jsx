@@ -1,56 +1,67 @@
-import React, { useState } from "react";
-import ProductCard from "../components/ProductCard";
+import React from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import products from "../data/products";
 
-const Home = ({ cartCount, onAddToCart, isLoggedIn, setIsLoggedIn }) => {
-
-  const [search, setSearch] = useState("");
-
-  const filteredProducts = products.filter((product) =>
-    product.name
-      .toLowerCase()
-      .includes(search.trim().toLowerCase())
-  );
-
+const Home = ({ cartCount, isLoggedIn, setIsLoggedIn }) => {
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-900 text-white">
 
-      <Navbar cartCount={cartCount}
-      isLoggedIn={isLoggedIn}
-      setIsLoggedIn={setIsLoggedIn} />
+      <Navbar
+        cartCount={cartCount}
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+      />
 
-      <div className="flex flex-col items-center gap-8 py-8">
+      <div className="flex flex-col items-center py-12">
 
-        <div className="w-full flex justify-center">
-          <input
-            type="text"
-            placeholder="Search products"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-96 px-4 py-3 rounded-lg border border-gray-300 text-white focus:outline-none"
-          />
-        </div>
-
-        <h1 className="text-5xl font-bold text-blue-500">
-          E-Commerce
+        <h1 className="text-5xl font-bold">
+          ZenMart
         </h1>
 
-        <div className="flex flex-wrap justify-center gap-6">
+     
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-16">
+            <Link to="/category/electronics">
+            <div className="bg-white rounded-xl shadow-lg w-72 h-72 flex flex-col justify-center items-center hover:scale-105 transition">
 
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={onAddToCart}
-              />
-            ))
-          ) : (
-            <h2 className="text-white text-2xl">
-              No products found.
-            </h2>
-          )}
+              <div className="text-7xl">
+                💻
+              </div>
+
+              <h2 className="text-black text-3xl font-bold mt-6">
+                Electronics
+              </h2>
+
+            </div>
+          </Link>     
+
+          
+
+          <Link to="/category/watches">
+            <div className="bg-white rounded-xl shadow-lg w-72 h-72 flex flex-col justify-center items-center hover:scale-105 transition">
+
+              <div className="text-7xl">
+                ⌚
+              </div>
+
+              <h2 className="text-black text-3xl font-bold mt-6">
+                Watches
+              </h2>
+
+            </div>
+          </Link>
+           <Link to="/category/shoes">
+            <div className="bg-white rounded-xl shadow-lg w-72 h-72 flex flex-col justify-center items-center hover:scale-105 transition">
+
+              <div className="text-7xl">
+                👟
+              </div>
+
+              <h2 className="text-black text-3xl font-bold mt-6">
+                Shoes
+              </h2>
+
+            </div>
+          </Link>
 
         </div>
 

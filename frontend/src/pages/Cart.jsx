@@ -7,6 +7,7 @@ const Cart = ({
   onDecreaseQuantity,
   onRemoveFromCart,
   onEmptyCart,
+  onPlaceOrder
 }) => {
   const navigate = useNavigate();
 
@@ -19,6 +20,10 @@ const Cart = ({
     (total, item) => total + item.quantity,
     0
   );
+  const handlePlaceOrder = () => {
+    onEmptyCart();
+    navigate("/order-success");
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
@@ -120,6 +125,17 @@ const Cart = ({
                 className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg"
               >
                 Empty Cart
+              </button>
+
+              <button
+                onClick={handlePlaceOrder}
+                disabled={cart.length === 0}
+                className={`px-6 py-3 rounded-lg text-white ${
+                  cart.length>0
+                  ?"bg-green-600 hover:bg-green-700":"bg-gray-500 cursor-not-allowed"
+                }`}
+              >
+                Place Order
               </button>
             </div>
           </div>
