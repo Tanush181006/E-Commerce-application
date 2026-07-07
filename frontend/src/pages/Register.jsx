@@ -36,7 +36,7 @@ if (password.length < 6) {
 }
 setError("");
 setIsLoggedIn(true);
- navigate("/");
+ navigate("/home");
 
 
 };

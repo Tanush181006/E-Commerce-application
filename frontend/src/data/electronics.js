@@ -5,6 +5,7 @@ import airpods from "../assets/images/electronics/airpods.png";
 const electronics = [
   {
     id: 101,
+    category: "Electronics",
     name: "Macbook Air M5",
     price: 150000,
     stock: true,
@@ -12,6 +13,7 @@ const electronics = [
   },
   {
     id: 102,
+    category: "Electronics",
     name: "iPad Pro",
     price: 100000,
     stock: true,
@@ -19,6 +21,7 @@ const electronics = [
   },
   {
     id: 103,
+    category: "Electronics",
     name: "Iphone 17 Pro",
     price: 80000,
     stock: false,
@@ -26,6 +29,7 @@ const electronics = [
   },
   {
     id: 104,
+    category: "Electronics",
     name: "Airpods Pro 3",
     price: 30000,
     stock: true,

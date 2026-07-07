@@ -9,10 +9,14 @@
   import QuantitySelector from "../components/QuantitySelector";
   import Cart from "../pages/Cart.jsx";
   import ProductDetails from "../pages/ProductDetails.jsx";
-  import Home from "../pages/Home.jsx";
+  import UserHome from "../pages/UserHome.jsx";
   import Electronics from "../pages/Electronics.jsx";
   import Watches from "../pages/Watches.jsx";
   import OrderSuccess from "../pages/OrderSuccess.jsx";
+  import Home from "../pages/Home.jsx";
+  import AddProduct from "../admin/pages/AddProduct.jsx";
+  import ManageProducts from "../admin/pages/ManageProducts.jsx";
+  import EditProduct from "../admin/pages/EditProduct.jsx";
 
   function AppRoutes({cart, cartCount, onAddToCart,
      onIncreaseQuantity, onDecreaseQuantity,
@@ -23,10 +27,11 @@
     return (
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route
-  path="/"
+  path="/home"
   element={
-    <Home
+    <UserHome
       cartCount={cartCount}
       onAddToCart={onAddToCart}
       isLoggedIn={isLoggedIn}
@@ -92,6 +97,9 @@
             onEmptyCart={onEmptyCart}
             onPlaceOrder={onPlaceOrder}/>} />
           <Route path="/order-success" element={<OrderSuccess />} />
+          <Route path="/admin/add-product" element={<AddProduct />} />
+          <Route path="/admin/manage-products" element={<ManageProducts />} />
+          <Route path="/admin/edit-product/:id" element={<EditProduct />} />
         </Routes>
       </BrowserRouter>
     );

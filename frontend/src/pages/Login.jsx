@@ -31,7 +31,7 @@ const Login = ({ setIsLoggedIn }) => {
     setError("");
     setIsLoggedIn(true);
 
-    navigate("/");
+    navigate("/home");
   };
 
   return (

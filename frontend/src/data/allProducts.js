@@ -3,9 +3,10 @@ import electronics from "./electronics";
 import watches from "./watches";
 
 const allProducts = [
-  ...shoes,
+ 
   ...electronics,
   ...watches,
+   ...shoes,
 ];
 
 export default allProducts;

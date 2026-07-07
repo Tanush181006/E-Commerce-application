@@ -5,6 +5,7 @@ import kennethcole from "../assets/images/watches/kennethcole.png";
 const watches = [
   {
     id: 201,
+    category : "Watches",
     name: "Apple Watch Series 11",
     price: 45000,
     stock: true,
@@ -12,6 +13,7 @@ const watches = [
   },
   {
     id: 202,
+    category : "Watches",
     name: "Seiko Sports 5",
     price: 25000,
     stock: false,
@@ -19,6 +21,7 @@ const watches = [
   },
   {
     id: 203,
+    category : "Watches",
     name: "Casio G-Shock",
     price: 20000,
     stock: true,
@@ -26,6 +29,7 @@ const watches = [
   },
   {
     id: 204,
+    category : "Watches",
     name: "Kenneth Cole New York",
     price: 15000,
     stock: true,
