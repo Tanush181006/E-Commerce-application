@@ -14,7 +14,7 @@ const electronics = [
   {
     id: 102,
     category: "Electronics",
-    name: "iPad Pro",
+    name: "IPad Pro",
     price: 100000,
     stock: true,
     image: ipad,

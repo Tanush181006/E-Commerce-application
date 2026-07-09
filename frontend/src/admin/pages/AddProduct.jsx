@@ -98,7 +98,7 @@ const AddProduct = () => {
 
             <input
               type="text"
-              placeholder="Enter image URL"
+              placeholder="Enter image path"
               value={image}
               onChange={(e) => setImage(e.target.value)}
               className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
