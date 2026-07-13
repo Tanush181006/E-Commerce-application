@@ -6,10 +6,8 @@
   import NotFound from "../pages/NotFound.jsx";
   import AdminLogin from "../admin/pages/AdminLogin.jsx";
   import Dashboard from "../admin/pages/Dashboard";
-  import QuantitySelector from "../components/QuantitySelector";
   import Cart from "../pages/Cart.jsx";
   import ProductDetails from "../pages/ProductDetails.jsx";
-  import UserHome from "../pages/UserHome.jsx";
   import Electronics from "../pages/Electronics.jsx";
   import Watches from "../pages/Watches.jsx";
   import OrderSuccess from "../pages/OrderSuccess.jsx";
@@ -27,11 +25,10 @@
     return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route
-  path="/home"
+  path="/"
   element={
-    <UserHome
+    <Home
       cartCount={cartCount}
       onAddToCart={onAddToCart}
       isLoggedIn={isLoggedIn}
@@ -80,16 +77,18 @@
       <ProductDetails
         cartCount={cartCount}
         onAddToCart={onAddToCart}
+        isLoggedIn={isLoggedIn}
       />
     }
   />
   
-          <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="/register" element={<Register setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn}
+          onAddToCart={onAddToCart} />} />
+          <Route path="/register" element={<Register setIsLoggedIn={setIsLoggedIn}
+          onAddToCart={onAddToCart} />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/components/quantity-selector" element={<QuantitySelector />} />
           <Route path="/cart" element={<Cart cart={cart}
           onIncreaseQuantity={onIncreaseQuantity} 
           onDecreaseQuantity={onDecreaseQuantity}

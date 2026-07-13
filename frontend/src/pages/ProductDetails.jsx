@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import allProducts from "../data/allProducts";
 import Navbar from "../components/Navbar";
 
-const ProductDetails = ({ onAddToCart, cartCount }) => {
+const ProductDetails = ({ onAddToCart, cartCount, isLoggedIn}) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -47,8 +47,20 @@ const ProductDetails = ({ onAddToCart, cartCount }) => {
           )}
  
           <button
-            onClick={() => onAddToCart(product)}
-            disabled={!product.stock}
+onClick={() => {
+    if (!isLoggedIn) {
+        navigate("/login", {
+            state: {
+                redirectAfterAuth: "/cart",
+                message: "Please login to add items to your cart.",
+                product: product
+            }
+        });
+        return;
+    }
+
+    onAddToCart(product);
+}}            disabled={!product.stock}
             className={`mt-8 px-6 py-3 rounded-lg text-white font-semibold ${
               product.stock
                 ? "bg-blue-600 hover:bg-blue-700"

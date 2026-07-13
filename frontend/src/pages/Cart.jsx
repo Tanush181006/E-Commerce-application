@@ -38,7 +38,7 @@ const Cart = ({
           </h2>
 
           <button
-            onClick={() => navigate("/home")}
+            onClick={() => navigate("/")}
             className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg"
           >
             Continue Shopping
@@ -114,7 +114,7 @@ const Cart = ({
 
             <div className="flex justify-center gap-6 mt-8">
               <button
-                onClick={() => navigate("/home")}
+                onClick={() => navigate("/")}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg"
               >
                 Continue Shopping

@@ -1,53 +1,69 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
-const Home = () => {
+const UserHome = ({ cartCount, isLoggedIn, setIsLoggedIn }) => {
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col justify-center items-center px-6">
+    <div className="min-h-screen bg-gray-900 text-white">
 
-      <h1 className="text-5xl font-bold text-white mb-12">
-        🛍️ ZenMart
-      </h1>
+      <Navbar
+        cartCount={cartCount}
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+      />
 
-      
+      <div className="flex flex-col items-center py-12">
 
-      <div className="flex flex-col md:flex-row gap-10">
+        <h1 className="text-5xl font-bold">
+          ZenMart
+        </h1>
 
-        <Link to="/home">
-          <div className="bg-white rounded-xl shadow-lg w-80 h-72 flex flex-col justify-center items-center hover:scale-105 hover:shadow-2xl transition duration-300">
+     
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-16">
+            <Link to="/category/electronics">
+            <div className="bg-white rounded-xl shadow-lg w-72 h-72 flex flex-col justify-center items-center hover:scale-105 transition">
 
-            <div className="text-7xl mb-6">
-              👤
+              <div className="text-7xl">
+                💻
+              </div>
+
+              <h2 className="text-black text-3xl font-bold mt-6">
+                Electronics
+              </h2>
+
             </div>
+          </Link>     
 
-            <h2 className="text-3xl font-bold">
-              User
-            </h2>
+          
 
-            <p className="text-gray-600 mt-3">
-              Browse Products
-            </p>
+          <Link to="/category/watches">
+            <div className="bg-white rounded-xl shadow-lg w-72 h-72 flex flex-col justify-center items-center hover:scale-105 transition">
 
-          </div>
-        </Link>
+              <div className="text-7xl">
+                ⌚
+              </div>
 
-        <Link to="/admin/login">
-          <div className="bg-white rounded-xl shadow-lg w-80 h-72 flex flex-col justify-center items-center hover:scale-105 hover:shadow-2xl transition duration-300">
+              <h2 className="text-black text-3xl font-bold mt-6">
+                Watches
+              </h2>
 
-            <div className="text-7xl mb-6">
-              🛡️
             </div>
+          </Link>
+           <Link to="/category/shoes">
+            <div className="bg-white rounded-xl shadow-lg w-72 h-72 flex flex-col justify-center items-center hover:scale-105 transition">
 
-            <h2 className="text-3xl font-bold">
-              Admin
-            </h2>
+              <div className="text-7xl">
+                👟
+              </div>
 
-            <p className="text-gray-600 mt-3">
-              Manage Store
-            </p>
+              <h2 className="text-black text-3xl font-bold mt-6">
+                Shoes
+              </h2>
 
-          </div>
-        </Link>
+            </div>
+          </Link>
+
+        </div>
 
       </div>
 
@@ -55,4 +71,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default UserHome;

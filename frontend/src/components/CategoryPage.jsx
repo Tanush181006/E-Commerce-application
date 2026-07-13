@@ -43,6 +43,7 @@ const CategoryPage = ({title, products, cartCount, onAddToCart, isLoggedIn, setI
                 key={product.id}
                 product={product}
                 onAddToCart={onAddToCart}
+                isLoggedIn={isLoggedIn}
               />
             ))
           ) : (

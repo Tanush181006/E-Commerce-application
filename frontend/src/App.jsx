@@ -27,7 +27,7 @@ function App() {
 
   } else {
 
-    setCart([
+    setCart([ 
       ...cart,
       {
         ...product,

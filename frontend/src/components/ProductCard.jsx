@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {  Link, useNavigate } from "react-router-dom";
 
 const ProductCard = (props) => {
+  const navigate = useNavigate();
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 w-90">
 
@@ -36,8 +37,21 @@ const ProductCard = (props) => {
             ? "bg-blue-600 hover:bg-blue-700"
             : "bg-gray-400 cursor-not-allowed"
         }`}
-        onClick={() => props.onAddToCart(props.product)}
-        disabled={!props.product.stock}
+onClick={() => {
+    if (!props.isLoggedIn) {
+        navigate("/login", {
+            state: {
+                redirectAfterAuth: "/cart",
+                message: "Please login to add items to your cart.",
+                        product: props.product
+
+            }
+        });
+        return;
+    }
+
+    props.onAddToCart(props.product);
+}}        disabled={!props.product.stock}
       >
         {props.product.stock ? "Add to Cart" : "Out of Stock"}
       </button>
