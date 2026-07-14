@@ -16,13 +16,11 @@ from app.core.config import (
 from app import crud
 
 
-# OAuth2 Scheme
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
-# Password Hasher
 password_hash = PasswordHash.recommended()
 
-# Common Authentication Exception
 credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="Could not validate credentials",
@@ -30,9 +28,6 @@ credentials_exception = HTTPException(
 )
 
 
-# -----------------------------
-# Password Hashing
-# -----------------------------
 def hash_password(password: str):
     return password_hash.hash(password)
 
@@ -43,10 +38,6 @@ def verify_password(plain_password: str, hashed_password: str):
         hashed_password
     )
 
-
-# -----------------------------
-# JWT Token Creation
-# -----------------------------
 def create_access_token(data: dict):
     to_encode = data.copy()
 
@@ -64,10 +55,6 @@ def create_access_token(data: dict):
 
     return encoded_jwt
 
-
-# -----------------------------
-# Database Session
-# -----------------------------
 def get_db():
     db = SessionLocal()
 
@@ -77,9 +64,6 @@ def get_db():
         db.close()
 
 
-# -----------------------------
-# Get Current Logged-in User
-# -----------------------------
 def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
     db: Annotated[Session, Depends(get_db)],
@@ -107,9 +91,6 @@ def get_current_user(
     return user
 
 
-# -----------------------------
-# Get Current Admin
-# -----------------------------
 def get_current_admin(
     current_user: Annotated[object, Depends(get_current_user)],
 ):
