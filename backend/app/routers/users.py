@@ -57,6 +57,7 @@ def login_user(
     return {
         "access_token": access_token,
         "token_type": "bearer",
+         "is_admin": user.is_admin,
     }
 @router.get("/me")
 def read_users_me(

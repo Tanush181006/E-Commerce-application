@@ -101,3 +101,38 @@ def get_current_admin(
         )
 
     return current_user
+
+def get_current_user(
+    token: Annotated[str, Depends(oauth2_scheme)],
+    db: Annotated[Session, Depends(get_db)],
+):
+    print("\n========== AUTH DEBUG ==========")
+    print("Received token:", token)
+
+    try:
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM],
+        )
+        print("Decoded payload:", payload)
+
+        email = payload.get("sub")
+        print("Email:", email)
+
+        if email is None:
+            print("No 'sub' claim found")
+            raise credentials_exception
+
+    except Exception as e:
+        print("JWT decode error:", repr(e))
+        raise credentials_exception
+
+    user = crud.get_user_by_email(db, email)
+    print("User found:", user)
+    print("================================\n")
+
+    if user is None:
+        raise credentials_exception
+
+    return user

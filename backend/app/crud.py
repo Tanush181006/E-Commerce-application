@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app import models
 from app.schemas import (
@@ -226,6 +226,10 @@ def get_orders_by_user(
 ):
     return (
         db.query(models.Order)
+        .options(
+            joinedload(models.Order.order_items)
+            .joinedload(models.OrderItem.product)
+        )
         .filter(models.Order.user_id == user_id)
         .all()
     )
@@ -236,6 +240,10 @@ def get_order_by_id(
 ):
     return (
         db.query(models.Order)
+        .options(
+            joinedload(models.Order.order_items)
+            .joinedload(models.OrderItem.product)
+        )
         .filter(models.Order.id == order_id)
         .first()
     )

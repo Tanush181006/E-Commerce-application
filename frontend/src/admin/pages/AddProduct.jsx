@@ -1,45 +1,72 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createProduct } from "../../api/productApi";
 
 const AddProduct = () => {
   const navigate = useNavigate();
 
-  const [productName, setProductName] = useState("");
-  const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("Shoes");
-  const [image, setImage] = useState("");
-  const [stock, setStock] = useState(true);
+  const token = localStorage.getItem("access_token");
+
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    brand: "",
+    price: "",
+    stock: "",
+    category_id: 1,
+    image_url: "",
+  });
+
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        name === "price" ||
+        name === "stock" ||
+        name === "category_id"
+          ? Number(value)
+          : value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
-      !productName.trim() ||
-      !price.trim() ||
-      !image.trim()
+      !formData.name.trim() ||
+      !formData.description.trim() ||
+      !formData.brand.trim() ||
+      !formData.image_url.trim() ||
+      formData.price <= 0 ||
+      formData.stock < 0
     ) {
-      setError("Please fill all the details.");
+      setError("Please fill all the details correctly.");
       return;
     }
 
     setError("");
 
-    console.log({
-      productName,
-      price,
-      category,
-      image,
-      stock,
-    });
+    try {
+      await createProduct(formData, token);
 
-    navigate("/admin/dashboard");
+      alert("Product added successfully!");
+
+      navigate("/admin/manage-products");
+
+    } catch (err) {
+      console.error(err);
+      alert("Unable to add product.");
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-900 flex justify-center items-center">
 
-      <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
+      <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-lg">
 
         <h1 className="text-4xl font-bold text-center text-blue-600 mb-6">
           Add Product
@@ -54,10 +81,37 @@ const AddProduct = () => {
 
             <input
               type="text"
-              placeholder="Enter product name"
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
-              className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block font-semibold mb-2">
+              Description
+            </label>
+
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block font-semibold mb-2">
+              Brand
+            </label>
+
+            <input
+              type="text"
+              name="brand"
+              value={formData.brand}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
             />
           </div>
 
@@ -68,10 +122,24 @@ const AddProduct = () => {
 
             <input
               type="number"
-              placeholder="Enter price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block font-semibold mb-2">
+              Stock Quantity
+            </label>
+
+            <input
+              type="number"
+              name="stock"
+              value={formData.stock}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
             />
           </div>
 
@@ -81,40 +149,30 @@ const AddProduct = () => {
             </label>
 
             <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              name="category_id"
+              value={formData.category_id}
+              onChange={handleChange}
               className="w-full border rounded-lg px-4 py-3"
             >
-              <option>Shoes</option>
-              <option>Electronics</option>
-              <option>Watches</option>
+              <option value={1}>Shoes</option>
+              <option value={7}>Electronics</option>
+              <option value={8}>Watches</option>
             </select>
           </div>
 
-          <div className="mb-4">
+          <div className="mb-6">
             <label className="block font-semibold mb-2">
-              Image Path
+              Image Filename
             </label>
 
             <input
               type="text"
-              placeholder="Enter image path"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              name="image_url"
+              placeholder="nike.png"
+              value={formData.image_url}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
             />
-          </div>
-
-          <div className="flex items-center gap-2 mb-6">
-            <input
-              type="checkbox"
-              checked={stock}
-              onChange={() => setStock(!stock)}
-            />
-
-            <label className="font-semibold">
-              In Stock
-            </label>
           </div>
 
           {error && (

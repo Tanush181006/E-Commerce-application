@@ -1,6 +1,5 @@
 import React from "react";
 import CategoryPage from "../components/CategoryPage";
-import watches from "../data/watches";
 
 const Watches = ({
   cartCount,
@@ -11,7 +10,7 @@ const Watches = ({
   return (
     <CategoryPage
       title="Watches"
-      products={watches}
+      categoryId={2}
       cartCount={cartCount}
       onAddToCart={onAddToCart}
       isLoggedIn={isLoggedIn}

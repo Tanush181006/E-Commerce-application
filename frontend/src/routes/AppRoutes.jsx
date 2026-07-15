@@ -15,7 +15,8 @@
   import AddProduct from "../admin/pages/AddProduct.jsx";
   import ManageProducts from "../admin/pages/ManageProducts.jsx";
   import EditProduct from "../admin/pages/EditProduct.jsx";
-
+  import MyOrders from "../pages/MyOrders.jsx"
+  import AdminChoice from "../pages/AdminChoice";
   function AppRoutes({cart, cartCount, onAddToCart,
      onIncreaseQuantity, onDecreaseQuantity,
      onRemoveFromCart, onEmptyCart, 
@@ -96,9 +97,23 @@
             onEmptyCart={onEmptyCart}
             onPlaceOrder={onPlaceOrder}/>} />
           <Route path="/order-success" element={<OrderSuccess />} />
+          <Route
+  path="/admin-choice"
+  element={<AdminChoice />}
+/>
           <Route path="/admin/add-product" element={<AddProduct />} />
           <Route path="/admin/manage-products" element={<ManageProducts />} />
           <Route path="/admin/edit-product/:id" element={<EditProduct />} />
+        <Route
+        path="/my-orders"
+      element={
+    <MyOrders
+      cartCount={cartCount}
+      isLoggedIn={isLoggedIn}
+      setIsLoggedIn={setIsLoggedIn}
+    />
+  }
+/>
         </Routes>
       </BrowserRouter>
     );

@@ -1,5 +1,8 @@
-from pydantic import BaseModel
 from datetime import datetime
+
+from pydantic import BaseModel
+
+
 class ProductCreate(BaseModel):
     name: str
     description: str
@@ -8,6 +11,8 @@ class ProductCreate(BaseModel):
     image_url: str
     category_id: int
     brand: str
+
+
 class ProductUpdate(BaseModel):
     name: str
     description: str
@@ -16,6 +21,7 @@ class ProductUpdate(BaseModel):
     image_url: str
     category_id: int
     brand: str
+
 
 class ProductResponse(BaseModel):
     id: int
@@ -30,11 +36,14 @@ class ProductResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
+
 class CategoryCreate(BaseModel):
     name: str
     slug: str
     description: str | None = None
     image_url: str | None = None
+
 
 class CategoryUpdate(BaseModel):
     name: str
@@ -52,7 +61,8 @@ class CategoryResponse(BaseModel):
 
     class Config:
         from_attributes = True
-    
+
+
 class UserCreate(BaseModel):
     full_name: str
     email: str
@@ -73,9 +83,12 @@ class UserResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str
+    is_admin: bool
 
 
 class TokenData(BaseModel):
@@ -86,16 +99,28 @@ class OrderItemCreate(BaseModel):
     product_id: int
     quantity: int
 
+
 class OrderCreate(BaseModel):
     items: list[OrderItemCreate]
 
-class OrderItemResponse(BaseModel):
-    product_id: int
-    quantity: int
-    price: float
+
+class OrderProductResponse(BaseModel):
+    id: int
+    name: str
+    image_url: str
 
     class Config:
         from_attributes = True
+
+
+class OrderItemResponse(BaseModel):
+    quantity: int
+    price: float
+    product: OrderProductResponse
+
+    class Config:
+        from_attributes = True
+
 
 class OrderResponse(BaseModel):
     id: int
@@ -107,6 +132,7 @@ class OrderResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
 
 class OrderStatusUpdate(BaseModel):
     status: str

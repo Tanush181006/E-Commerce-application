@@ -1,19 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import allProducts from "../../data/allProducts";
+import {
+  getProducts,
+  deleteProduct,
+} from "../../api/productApi";
 
 const ManageProducts = () => {
   const navigate = useNavigate();
 
-  const handleDelete = (id) => {
-  const confirmDelete = window.confirm(
-    "Are you sure you want to delete this product?"
-  );
+  const [products, setProducts] = useState([]);
 
-  if (confirmDelete) {
-    alert(`Product ${id} deleted successfully.`);
-  }
-};
+  const token = localStorage.getItem("access_token");
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const data = await getProducts();
+      setProducts(data);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to load products.");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await deleteProduct(id, token);
+
+      fetchProducts();
+
+      alert("Product deleted successfully.");
+    } catch (error) {
+      console.error(error);
+
+      alert("Unable to delete product.");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 p-8">
@@ -41,7 +72,7 @@ const ManageProducts = () => {
 
               <th>Name</th>
 
-              <th>Category</th>
+              <th>Brand</th>
 
               <th>Price</th>
 
@@ -55,7 +86,7 @@ const ManageProducts = () => {
 
           <tbody>
 
-            {allProducts.map((product) => (
+            {products.map((product) => (
 
               <tr
                 key={product.id}
@@ -63,29 +94,37 @@ const ManageProducts = () => {
               >
 
                 <td className="py-4">
+
                   <img
-                    src={product.image}
+                    src={`http://127.0.0.1:8000/static/products/${product.image_url}`}
                     alt={product.name}
                     className="w-20 h-20 object-contain mx-auto"
                   />
+
                 </td>
 
                 <td>{product.name}</td>
 
-                <td>{product.category}</td>
+                <td>{product.brand}</td>
 
                 <td>₹{product.price}</td>
 
                 <td>
-                  {product.stock ? (
+
+                  {product.stock > 0 ? (
+
                     <span className="text-green-600 font-semibold">
-                      In Stock
+                      {product.stock} Available
                     </span>
+
                   ) : (
+
                     <span className="text-red-600 font-semibold">
                       Out of Stock
                     </span>
+
                   )}
+
                 </td>
 
                 <td>

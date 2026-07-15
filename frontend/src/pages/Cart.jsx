@@ -20,10 +20,13 @@ const Cart = ({
     (total, item) => total + item.quantity,
     0
   );
-  const handlePlaceOrder = () => {
-    onEmptyCart();
+  const handlePlaceOrder = async () => {
+  const success = await onPlaceOrder();
+
+  if (success) {
     navigate("/order-success");
   }
+};
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
@@ -52,7 +55,8 @@ const Cart = ({
               className="bg-white text-black rounded-xl p-6 mb-6 shadow-lg"
             >
               <img
-                src={product.image}
+                  src={`http://127.0.0.1:8000/static/products/${product.image_url}`}
+
                 alt={product.name}
                 className="w-56 h-40 object-contain mx-auto"
               />

@@ -1,52 +1,113 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import allProducts from "../../data/allProducts";
+import {
+  getProduct,
+  updateProduct,
+} from "../../api/productApi";
 
 const EditProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const product = allProducts.find(
-    (product) => product.id === parseInt(id)
-  );
+  const token = localStorage.getItem("access_token");
 
-  const [productName, setProductName] = useState(product.name);
-  const [price, setPrice] = useState(product.price);
-  const [category, setCategory] = useState(product.category);
-  const [image, setImage] = useState(product.image);
-  const [stock, setStock] = useState(product.stock);
+  const [loading, setLoading] = useState(true);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    brand: "",
+    price: "",
+    stock: "",
+    category_id: 1,
+    image_url: "",
+  });
+
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+
+  const fetchProduct = async () => {
+    try {
+      const product = await getProduct(id);
+
+      setFormData({
+        name: product.name,
+        description: product.description,
+        brand: product.brand,
+        price: product.price,
+        stock: product.stock,
+        category_id: product.category_id,
+        image_url: product.image_url,
+      });
+
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      alert("Unable to load product.");
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        name === "price" ||
+        name === "stock" ||
+        name === "category_id"
+          ? Number(value)
+          : value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
-      !productName.trim() ||
-      !price ||
-      !image.trim()
+      !formData.name.trim() ||
+      !formData.description.trim() ||
+      !formData.brand.trim() ||
+      !formData.image_url.trim()
     ) {
-      setError("Please fill all the details.");
+      setError("Please fill all the fields.");
       return;
     }
 
     setError("");
 
-    console.log({
-      id,
-      productName,
-      price,
-      category,
-      image,
-      stock,
-    });
+    try {
+      await updateProduct(
+        id,
+        formData,
+        token
+      );
 
-    navigate("/admin/manage-products");
+      alert("Product updated successfully!");
+
+      navigate("/admin/manage-products");
+
+    } catch (err) {
+      console.error(err);
+      alert("Unable to update product.");
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex justify-center items-center text-white text-3xl">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 flex justify-center items-center">
 
-      <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
+      <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-lg">
 
         <h1 className="text-4xl font-bold text-center text-blue-600 mb-6">
           Edit Product
@@ -61,9 +122,37 @@ const EditProduct = () => {
 
             <input
               type="text"
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
-              className="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block font-semibold mb-2">
+              Description
+            </label>
+
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block font-semibold mb-2">
+              Brand
+            </label>
+
+            <input
+              type="text"
+              name="brand"
+              value={formData.brand}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
             />
           </div>
 
@@ -74,9 +163,24 @@ const EditProduct = () => {
 
             <input
               type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              className="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block font-semibold mb-2">
+              Stock Quantity
+            </label>
+
+            <input
+              type="number"
+              name="stock"
+              value={formData.stock}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
             />
           </div>
 
@@ -86,39 +190,29 @@ const EditProduct = () => {
             </label>
 
             <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              name="category_id"
+              value={formData.category_id}
+              onChange={handleChange}
               className="w-full border rounded-lg px-4 py-3"
             >
-              <option>Shoes</option>
-              <option>Electronics</option>
-              <option>Watches</option>
+              <option value={1}>Shoes</option>
+              <option value={7}>Electronics</option>
+              <option value={8}>Watches</option>
             </select>
           </div>
 
-          <div className="mb-4">
+          <div className="mb-6">
             <label className="block font-semibold mb-2">
-              Image Path
+              Image Filename
             </label>
 
             <input
               type="text"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+              name="image_url"
+              value={formData.image_url}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3"
             />
-          </div>
-
-          <div className="flex items-center gap-2 mb-6">
-            <input
-              type="checkbox"
-              checked={stock}
-              onChange={() => setStock(!stock)}
-            />
-
-            <label className="font-semibold">
-              In Stock
-            </label>
           </div>
 
           {error && (

@@ -1,15 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import allProducts from "../data/allProducts";
 import Navbar from "../components/Navbar";
+import { getProduct } from "../api/productApi";
 
-const ProductDetails = ({ onAddToCart, cartCount, isLoggedIn}) => {
-  const navigate = useNavigate();
+const ProductDetails = ({
+  onAddToCart,
+  cartCount,
+  isLoggedIn,
+}) => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
-  const product = allProducts.find(
-    (product) => product.id === Number(id)
-  );
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProduct();
+  }, [id]);
+
+  const fetchProduct = async () => {
+    try {
+      const data = await getProduct(id);
+      setProduct(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex justify-center items-center">
+        <h1 className="text-3xl">Loading...</h1>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex justify-center items-center">
+        <h1 className="text-3xl">Product not found</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -18,56 +52,59 @@ const ProductDetails = ({ onAddToCart, cartCount, isLoggedIn}) => {
 
       <div className="p-8">
 
-       
-
         <div className="flex flex-col items-center">
 
           <img
-            src={product.image}
+            src={`http://127.0.0.1:8000/static/products/${product.image_url}`}
             alt={product.name}
-            className="w-72"
+            className="w-80 h-80 object-contain"
           />
 
           <h1 className="text-5xl font-bold mt-6">
             {product.name}
           </h1>
 
+          <p className="text-xl mt-3 text-gray-300">
+            {product.description}
+          </p>
+
           <p className="text-2xl text-green-500 mt-4">
             ₹{product.price}
           </p>
 
-          {product.stock ? (
+          {product.stock > 0 ? (
             <p className="text-green-500 font-semibold text-xl mt-3">
-              In Stock
+              In Stock ({product.stock} left)
             </p>
           ) : (
             <p className="text-red-500 font-semibold text-xl mt-3">
               Out of Stock
             </p>
           )}
- 
-          <button
-onClick={() => {
-    if (!isLoggedIn) {
-        navigate("/login", {
-            state: {
-                redirectAfterAuth: "/cart",
-                message: "Please login to add items to your cart.",
-                product: product
-            }
-        });
-        return;
-    }
 
-    onAddToCart(product);
-}}            disabled={!product.stock}
+          <button
+            onClick={() => {
+              if (!isLoggedIn) {
+                navigate("/login", {
+                  state: {
+                    redirectAfterAuth: "/cart",
+                    message: "Please login to add items to your cart.",
+                    product,
+                  },
+                });
+                return;
+              }
+
+              onAddToCart(product);
+            }}
+            disabled={product.stock <= 0}
             className={`mt-8 px-6 py-3 rounded-lg text-white font-semibold ${
-              product.stock
+              product.stock > 0
                 ? "bg-blue-600 hover:bg-blue-700"
                 : "bg-gray-400 cursor-not-allowed"
             }`}
           >
-            {product.stock ? "Add to Cart" : "Out of Stock"}
+            {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
           </button>
 
         </div>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { registerUser } from "../api/authApi";
 
-const Register = ({ setIsLoggedIn, onAddToCart }) => {
+const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -11,7 +12,7 @@ const Register = ({ setIsLoggedIn, onAddToCart }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -20,12 +21,12 @@ const Register = ({ setIsLoggedIn, onAddToCart }) => {
       !password.trim() ||
       !confirmPassword.trim()
     ) {
-      setError("Please fill all the details");
+      setError("Please fill all the details.");
       return;
     }
 
     if (!email.includes("@") || !email.includes(".com")) {
-      setError("Please enter a valid email address");
+      setError("Please enter a valid email address.");
       return;
     }
 
@@ -35,16 +36,34 @@ const Register = ({ setIsLoggedIn, onAddToCart }) => {
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters long.");
+      setError("Password must be at least 6 characters.");
       return;
     }
 
     setError("");
-    setIsLoggedIn(true);
-    if (location.state?.product) {
-    onAddToCart(location.state.product);
-}
-    navigate(location.state?.redirectAfterAuth || "/");
+
+    try {
+      await registerUser({
+        full_name: fullName,
+        email,
+        password,
+      });
+
+      alert("Registration successful! Please login.");
+
+      navigate("/login", {
+        state: location.state,
+      });
+
+    } catch (err) {
+      console.error(err);
+
+      if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else {
+        setError("Registration failed.");
+      }
+    }
   };
 
   return (
@@ -71,10 +90,10 @@ const Register = ({ setIsLoggedIn, onAddToCart }) => {
 
               <input
                 type="text"
-                className="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your full name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
+                className="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -85,10 +104,10 @@ const Register = ({ setIsLoggedIn, onAddToCart }) => {
 
               <input
                 type="email"
-                className="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -99,10 +118,10 @@ const Register = ({ setIsLoggedIn, onAddToCart }) => {
 
               <input
                 type="password"
-                className="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -113,10 +132,10 @@ const Register = ({ setIsLoggedIn, onAddToCart }) => {
 
               <input
                 type="password"
-                className="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Confirm your password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -128,7 +147,7 @@ const Register = ({ setIsLoggedIn, onAddToCart }) => {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold"
             >
               Register
             </button>

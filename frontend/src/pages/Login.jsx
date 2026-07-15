@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import {
+  loginUser,
+  getCurrentUser,
+} from "../api/authApi";
 
 const Login = ({ setIsLoggedIn, onAddToCart }) => {
   const [email, setEmail] = useState("");
@@ -10,34 +14,70 @@ const Login = ({ setIsLoggedIn, onAddToCart }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogin = () => {
-    if (email === "") {
-      setError("Email is required");
-      return;
-    }
+  const handleLogin = async () => {
+  if (email === "") {
+    setError("Email is required");
+    return;
+  }
 
-    if (!email.includes("@") || !email.includes(".com")) {
-      setError("Please enter a valid email address");
-      return;
-    }
+  if (!email.includes("@") || !email.includes(".com")) {
+    setError("Please enter a valid email address");
+    return;
+  }
 
-    if (password === "") {
-      setError("Password is required");
-      return;
-    }
+  if (password === "") {
+    setError("Password is required");
+    return;
+  }
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters");
-      return;
-    }
+  if (password.length < 6) {
+    setError("Password must be at least 6 characters");
+    return;
+  }
 
-    setError("");
-    setIsLoggedIn(true);
-    if (location.state?.product) {
-    onAddToCart(location.state.product);
+  setError("");
+
+  try {
+    const data = await loginUser(email, password);
+
+localStorage.setItem(
+  "access_token",
+  data.access_token
+);
+
+localStorage.setItem(
+  "is_admin",
+  data.is_admin
+);
+const user = await getCurrentUser(
+  data.access_token
+);
+
+localStorage.setItem(
+  "full_name",
+  user.full_name
+);
+
+setIsLoggedIn(true);
+
+if (location.state?.product) {
+  onAddToCart(location.state.product);
 }
-    navigate(location.state?.redirectAfterAuth || "/");
-  };
+
+if (data.is_admin) {
+  navigate("/admin-choice");
+} else {
+  navigate(location.state?.redirectAfterAuth || "/");
+}
+
+  } catch (error) {
+
+    console.error(error);
+
+    setError("Invalid email or password.");
+
+  }
+};
 
   return (
     <nav>

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import AppRoutes from "./routes/AppRoutes";
+import { placeOrder } from "./api/orderApi";
 
 function App() {
 
   const [cart, setCart] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+const [isLoggedIn, setIsLoggedIn] = useState(
+  !!localStorage.getItem("access_token")
+);
   const handleAddToCart = (product) => {
    
 
@@ -62,6 +64,32 @@ const removeFromCart = (productId) => {
   const emptyCart = () => {
   setCart([]);
 };
+const handlePlaceOrder = async () => {
+  const token = localStorage.getItem("access_token");
+
+  if (!token) {
+    alert("Please login first.");
+    return false;
+  }
+
+  try {
+    await placeOrder(cart, token);
+
+    setCart([]);
+
+    return true;
+
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      error.response?.data?.detail ||
+      "Failed to place order."
+    );
+
+    return false;
+  }
+};
 
   return (
     <AppRoutes
@@ -74,7 +102,7 @@ const removeFromCart = (productId) => {
       onEmptyCart={emptyCart}
       isLoggedIn={isLoggedIn}
       setIsLoggedIn={setIsLoggedIn}
-
+      onPlaceOrder={handlePlaceOrder}
     />
   );
 }
