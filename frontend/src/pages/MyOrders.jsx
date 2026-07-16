@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getMyOrders } from "../api/orderApi";
+import {
+  getMyOrders,
+  cancelOrder,
+} from "../api/orderApi";
 import Navbar from "../components/Navbar";
 
 const MyOrders = ({
@@ -25,9 +28,27 @@ const MyOrders = ({
     }
   };
 
+  const handleCancelOrder = async (orderId) => {
+    const token = localStorage.getItem("access_token");
+
+    try {
+      await cancelOrder(orderId, token);
+
+      alert("Order cancelled successfully.");
+
+      fetchOrders();
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error.response?.data?.detail ||
+        "Unable to cancel order."
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-900">
-
       <Navbar
         cartCount={cartCount}
         isLoggedIn={isLoggedIn}
@@ -61,9 +82,7 @@ const MyOrders = ({
                   Order #{order.id}
                 </h2>
 
-                <span
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-                >
+                <span className="bg-blue-600 text-white px-4 py-2 rounded-lg">
                   {order.status}
                 </span>
 
@@ -106,11 +125,21 @@ const MyOrders = ({
 
               ))}
 
-              <div className="text-right mt-6">
+              <div className="flex justify-between items-center mt-6">
 
                 <h2 className="text-2xl font-bold">
                   Total: ₹{order.total_amount}
                 </h2>
+
+                {order.status !== "Delivered" &&
+                order.status !== "Cancelled" && (
+                  <button
+                    onClick={() => handleCancelOrder(order.id)}
+                    className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg"
+                  >
+                    Cancel Order
+                  </button>
+                )}
 
               </div>
 

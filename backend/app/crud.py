@@ -241,6 +241,7 @@ def get_order_by_id(
     return (
         db.query(models.Order)
         .options(
+            joinedload(models.Order.user),
             joinedload(models.Order.order_items)
             .joinedload(models.OrderItem.product)
         )

@@ -121,10 +121,19 @@ class OrderItemResponse(BaseModel):
     class Config:
         from_attributes = True
 
+class OrderUserResponse(BaseModel):
+    id: int
+    full_name: str
+    email: str
+
+    class Config:
+        from_attributes = True
+
 
 class OrderResponse(BaseModel):
     id: int
-    user_id: int
+    user: OrderUserResponse
+
     total_amount: float
     status: str
     created_at: datetime

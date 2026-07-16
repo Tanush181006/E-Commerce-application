@@ -33,3 +33,16 @@ export const getMyOrders = async (token) => {
 
   return response.data;
 };
+export const cancelOrder = async (orderId, token) => {
+  const response = await api.put(
+    `/orders/${orderId}/cancel`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};

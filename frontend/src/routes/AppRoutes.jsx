@@ -17,6 +17,7 @@
   import EditProduct from "../admin/pages/EditProduct.jsx";
   import MyOrders from "../pages/MyOrders.jsx"
   import AdminChoice from "../pages/AdminChoice";
+  import ManageOrders from "../admin/pages/ManageOrders";
   function AppRoutes({cart, cartCount, onAddToCart,
      onIncreaseQuantity, onDecreaseQuantity,
      onRemoveFromCart, onEmptyCart, 
@@ -100,6 +101,10 @@
           <Route
   path="/admin-choice"
   element={<AdminChoice />}
+/>
+<Route
+  path="/admin/manage-orders"
+  element={<ManageOrders />}
 />
           <Route path="/admin/add-product" element={<AddProduct />} />
           <Route path="/admin/manage-products" element={<ManageProducts />} />

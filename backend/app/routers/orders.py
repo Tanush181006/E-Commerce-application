@@ -71,6 +71,46 @@ def get_order(
 
     return order
 
+@router.put(
+    "/{order_id}/cancel",
+    response_model=schemas.OrderStatusResponse,
+)
+def cancel_order(
+    order_id: int,
+    db: Annotated[Session, Depends(get_db)],
+    current_user=Depends(get_current_user),
+):
+    order = crud.get_order_by_id(
+        db,
+        order_id,
+    )
+
+    if not order:
+        raise HTTPException(
+            status_code=404,
+            detail="Order not found",
+        )
+
+    if order.user_id != current_user.id:
+        raise HTTPException(
+            status_code=403,
+            detail="Not authorized to cancel this order",
+        )
+
+    if order.status in ["Delivered", "Cancelled"]:
+        raise HTTPException(
+            status_code=400,
+            detail="This order can no longer be cancelled",
+        )
+
+    order = crud.update_order_status(
+        db,
+        order_id,
+        "Cancelled",
+    )
+
+    return order
+
 @router.get(
     "/admin/all",
     response_model=list[schemas.OrderResponse],

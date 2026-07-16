@@ -168,7 +168,6 @@ const AddProduct = () => {
             <input
               type="text"
               name="image_url"
-              placeholder="nike.png"
               value={formData.image_url}
               onChange={handleChange}
               className="w-full border rounded-lg px-4 py-3"

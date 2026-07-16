@@ -48,6 +48,12 @@ const Dashboard = () => {
           >
             📦 Manage Products
           </Link>
+          <Link
+  to="/admin/manage-orders"
+  className="bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold text-center"
+>
+  📋 Manage Orders
+</Link>
 
           <button
             onClick={handleLogout}
