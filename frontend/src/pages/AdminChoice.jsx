@@ -6,7 +6,7 @@ const AdminChoice = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 flex justify-center items-center">
-      <div className="bg-white p-10 rounded-xl shadow-xl text-center w-[500px]">
+      <div className="bg-white p-10 rounded-xl shadow-xl text-center w-125">
 
         <h1 className="text-4xl font-bold text-blue-600 mb-4">
           Welcome!
