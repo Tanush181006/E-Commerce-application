@@ -154,9 +154,10 @@ const AddProduct = () => {
               onChange={handleChange}
               className="w-full border rounded-lg px-4 py-3"
             >
-              <option value={1}>Shoes</option>
-              <option value={7}>Electronics</option>
-              <option value={8}>Watches</option>
+              
+              <option value={1}>Electronics</option>
+              <option value={2}>Watches</option>
+              <option value={3}>Shoes</option>
             </select>
           </div>
 
